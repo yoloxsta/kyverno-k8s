@@ -1,5 +1,10 @@
 # kyverno-k8s
 
+## Why Choose Kyverno?
+- Native Kubernetes Integration: Kyverno is designed specifically for Kubernetes, offering policies as first-class Kubernetes resources.
+- Simplicity: Writing and managing policies with Kyverno is straightforward, requiring no new languages or complex configurations.
+- Flexibility: Kyverno supports validation, mutation, and generation of policies, covering a wide range of use cases from security to configuration management.
+
 ## Installing Kyverno Using Helm
 ```
 - helm repo add kyverno https://kyverno.github.io/kyverno/
