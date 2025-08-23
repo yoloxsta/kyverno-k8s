@@ -6,11 +6,11 @@
 - helm repo update
 ```
 
-# Install Kyverno in kyverno namespace using the following command:
+## Install Kyverno in kyverno namespace using the following command:
 ```
 - helm install kyverno kyverno/kyverno -n kyverno --create-namespace
 ```
-# Checking 
+## Checking 
 ```
 - kubectl get all -n kyverno
 - kubectl get pods -n kyverno
@@ -20,4 +20,4 @@
 ```
 - ![alt text](image.png)
 
-
+##
