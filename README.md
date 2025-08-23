@@ -17,7 +17,7 @@
 - kubectl get deployments -n kyverno
 - kubectl get services -n kyverno
 - kubectl get crds | grep kyverno
-
+```
 - ![alt text](image.png)
 
-```
+
