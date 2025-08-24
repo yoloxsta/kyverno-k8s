@@ -25,4 +25,10 @@
 ```
 - ![alt text](image.png)
 
-##
+## Exercise for mutating policies in kyverno
+
+```
+- kubectl apply -f add-default-resources.yaml
+- kubectl apply -f add-environment-label.yaml
+- kubectl apply -f pod-add-environment-label.yaml
+```
