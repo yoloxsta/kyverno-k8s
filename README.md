@@ -50,3 +50,45 @@
 - kubectl get namespace kodekloud --show-labels
 ```
 
+## Exercise 3
+- kyverno cli 
+```
+>> require-label.yaml
+
+apiVersion: kyverno.io/v1
+kind: ClusterPolicy
+metadata:
+  name: require-label
+spec:
+  validationFailureAction: Enforce
+  rules:
+  - name: check-for-label
+    match:
+      resources:
+        kinds:
+        - Pod
+    validate:
+      message: "The label 'environment: production' is required."
+      pattern:
+        metadata:
+         labels:
+           environment: production
+---
+
+>> pod-label.yaml
+
+apiVersion: v1
+kind: Pod
+metadata:
+  name: test-pod
+spec:
+  containers:
+  - name: test-container
+    image: nginx
+
+---
+Testing
+
+- kyverno apply require-label.yaml --resource pod-label.yaml
+
+```
