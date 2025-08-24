@@ -32,3 +32,11 @@
 - kubectl apply -f add-environment-label.yaml
 - kubectl apply -f pod-add-environment-label.yaml
 ```
+
+## Exercise 2
+
+```
+- kubectl apply -f add-namespace-label.yaml
+- kubectl create namespace kodekloud
+- kubectl get namespace kodekloud --show-labels
+```
