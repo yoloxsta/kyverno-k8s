@@ -10,6 +10,12 @@
 - helm repo add kyverno https://kyverno.github.io/kyverno/
 - helm repo update
 ```
+## Kyverno CLI Installation
+```
+- curl -LO https://github.com/kyverno/kyverno/releases/download/v1.12.0/kyverno-cli_v1.12.0_linux_x86_64.tar.gz
+- tar -xvf kyverno-cli_v1.12.0_linux_x86_64.tar.gz
+- sudo cp kyverno /usr/local/bin/
+```
 
 ## Install Kyverno in kyverno namespace using the following command:
 ```
@@ -40,3 +46,4 @@
 - kubectl create namespace kodekloud
 - kubectl get namespace kodekloud --show-labels
 ```
+
