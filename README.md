@@ -25,7 +25,7 @@
 ```
 - ![alt text](image.png)
 
-## Exercise for mutating policies in kyverno
+## Exercise 1 for mutating policies in kyverno
 
 ```
 - kubectl apply -f add-default-resources.yaml
