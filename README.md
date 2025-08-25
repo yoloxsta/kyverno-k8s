@@ -92,3 +92,144 @@ Testing
 - kyverno apply require-label.yaml --resource pod-label.yaml
 
 ```
+## Exercise 4
+- Lab A — Validate: require an app label on Pods
+```
+# file: cp-require-app-label.yaml
+apiVersion: kyverno.io/v1
+kind: ClusterPolicy
+metadata:
+name: require-app-label
+spec:
+validationFailureAction: Audit
+background: true
+rules:
+- name: require-app-label
+match:
+any:
+- resources:
+kinds:
+- Pod
+validate:
+message: "Pods must have app.kubernetes.io/name label"
+pattern:
+metadata:
+labels:
+app.kubernetes.io/name: "?*"
+---
+kubectl apply -f cp-require-app-label.yaml
+---
+# file: pod-no-label.yaml
+apiVersion: v1
+kind: Pod
+metadata:
+name: test-no-label
+spec:
+containers:
+- name: c
+image: nginx:1.25.5
+ports:
+- containerPort: 80
+-----
+kubectl apply -f pod-no-label.yaml
+# See policy reports
+kubectl get policyreport -A
+kubectl get policyreport -n default -o yaml | grep -A4 "require-app-label" || true
+---
+# file: pod-with-label.yaml
+apiVersion: v1
+kind: Pod
+metadata:
+name: test-with-label
+labels:
+app.kubernetes.io/name: web
+spec:
+containers:
+- name: c
+image: nginx:1.25.5
+---
+kubectl apply -f pod-with-label.yaml
+kubectl get pods -o wide
+
+```
+- Lab B — Mutate: auto‑add a default label
+```
+# file: cp-add-default-label.yaml
+apiVersion: kyverno.io/v1
+kind: ClusterPolicy
+metadata:
+name: add-default-label
+spec:
+background: true
+rules:
+- name: add-default-label
+match:
+any:
+- resources:
+kinds:
+- Pod
+mutate:
+patchStrategicMerge:
+metadata:
+labels:
++(app.kubernetes.io/name): default-app
+---
+kubectl apply -f cp-add-default-label.yaml
+kubectl delete pod test-no-label --ignore-not-found
+kubectl apply -f pod-no-label.yaml
+kubectl get pod test-no-label -o jsonpath='{.metadata.labels}' && echo
+
+- Expected: label app.kubernetes.io/name=default-app has been added by mutation.
+
+```
+- Lab C — Validate: disallow :latest image tags
+
+```
+# file: cp-disallow-latest.yaml
+apiVersion: kyverno.io/v1
+kind: ClusterPolicy
+metadata:
+name: disallow-latest-tag
+spec:
+validationFailureAction: Enforce
+background: true
+rules:
+- name: no-latest
+match:
+any:
+- resources:
+kinds:
+- Pod
+- Deployment
+validate:
+message: "Images must use an explicit, non-latest tag"
+pattern:
+spec:
+containers:
+- name: "*"
+image: "!*:latest"
+---
+# file: pod-uses-latest.yaml
+apiVersion: v1
+kind: Pod
+metadata:
+name: latest-bad
+spec:
+containers:
+- name: c
+image: nginx:latest
+
+- kubectl apply -f pod-uses-latest.yaml # expect deny
+---
+# file: pod-uses-version.yaml
+apiVersion: v1
+kind: Pod
+metadata:
+name: version-good
+spec:
+containers:
+- name: c
+image: nginx:1.25.5
+
+- kubectl apply -f pod-uses-version.yaml
+```
