@@ -85,7 +85,6 @@ spec:
   containers:
   - name: test-container
     image: nginx
-
 ---
 Testing
 
