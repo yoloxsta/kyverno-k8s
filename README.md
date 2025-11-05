@@ -35,7 +35,6 @@
 - ![alt text](image.png)
 
 ## Exercise 1 for mutating policies in kyverno
-
 ```
 - kubectl apply -f add-default-resources.yaml
 - kubectl apply -f add-environment-label.yaml
