@@ -42,7 +42,6 @@
 ```
 
 ## Exercise 2
-
 ```
 - kubectl apply -f add-namespace-label.yaml
 - kubectl create namespace kodekloud
